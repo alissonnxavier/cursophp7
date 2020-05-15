@@ -6,7 +6,8 @@ $user = new Usuario();
 
 echo "---------------- </br>";
 
-$user->login("joao@gmail.com", "123");
+$user->loadById(10);
+$user->update("alterado!", "alterado!");
 
 echo $user;
 
