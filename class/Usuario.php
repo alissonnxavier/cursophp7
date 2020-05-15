@@ -39,6 +39,45 @@ class Usuario {
         $this->dtcadastro = $data;
     }
 
+    public static function getList () {
+
+        $sql = new Sql();
+        $result = $sql->select("SELECT * FROM tb_usuarios ORDER BY deslogin");
+        return $result;
+    }
+
+    public function search ($login) {
+
+        $sql = new Sql();
+        return $sql->select("SELECT * FROM tb_usuarios WHERE deslogin LIKE :SEARCH ORDER BY deslogin", array(
+            ":SEARCH"=>"%".$login."%"
+        ));
+    }
+
+    public function login ($login, $senha) {
+
+        $sql = new Sql();
+        $result = $sql->select("SELECT * FROM tb_usuarios WHERE deslogin = :LOGIN AND dessenha = :PASSWORD", array(
+            ":LOGIN"=>$login,
+            ":PASSWORD"=>$senha
+        ));
+
+        //var_dump($result);
+
+        if(isset($result[0])){
+
+            $row = $result[0];   
+
+            $this->setIdusuario($row['idusuario']);
+            $this->setDeslogin($row['deslogin']);
+            $this->setDessenha($row['dessenha']);
+            $this->setDtcadastro(new DateTime($row['dtcadastro']));
+        } else {
+
+            throw new Exception("Email ou senha incorretors", 1);
+        }
+    }
+
     public function loadById ($id) {
 
         $sql = new Sql();
@@ -47,8 +86,6 @@ class Usuario {
         ));
 
         if(isset($result[0])){
-
-            var_dump($result);
 
             $row = $result[0];
             $this->setIdusuario($row['idusuario']);

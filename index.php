@@ -2,10 +2,13 @@
 
 require_once("config.php");
 
-$root = new Usuario ();
-$root->loadById(10);
+$user = new Usuario();
 
-echo $root;
+echo "---------------- </br>";
+
+$user->login("joao@gmail.com", "123");
+
+echo $user;
 
 
 
